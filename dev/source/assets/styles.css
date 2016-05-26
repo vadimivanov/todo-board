@@ -1,0 +1,15 @@
+button,
+select,
+html,
+textarea,
+input {
+    font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+body {
+    background-image: url('./img/background4.jpeg');
+
+}
