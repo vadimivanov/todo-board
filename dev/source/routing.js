@@ -9,7 +9,11 @@ function routing($stateProvider, $urlRouterProvider) {
         })
         .state('home', {
             url: '/',
-            template: '<home-component></home-component>'
+            template: '<home-component><home-component>'
+        })
+        .state('test', {
+            url: '/test',
+            template: '<test-component></test-component>'
         });
 }
 

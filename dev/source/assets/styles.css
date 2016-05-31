@@ -10,6 +10,6 @@ input {
 }
 
 body {
-    background-image: url('./img/background4.jpeg');
-
+    background: url('./img/background4.jpeg') no-repeat center top fixed;
+    background-size: cover;
 }

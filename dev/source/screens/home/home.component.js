@@ -1,49 +1,40 @@
 let templateHome = require('./home.html');
 
-class HomeComponent {
-    constructor () {
-        this.template = templateHome;
-        this.restrict = 'E';
-        this.scope = {};
-        let _state;
-        let _BoardService;
-        let _BoardFactory;
-        let _PubSub;
+class HomeController {
+    constructor($scope, PubSub, BoardService, BoardFactory, StorageService) {
+        var ctrl = this;
+        this.loadBoard = StorageService.loadData('ToDoBoard');
+        this.kanbanBoard = this.loadBoard || BoardService.kanbanBoard(BoardFactory.kanban);
+        this.visible = false;
+            console.log('loadBoard ', this.loadBoard);
 
-        this.link = function ($scope) {
-            $scope.kanbanBoard = _BoardService.kanbanBoard(_BoardFactory.kanban);
-
-            console.log('$scope.kanbanBoard ', $scope.kanbanBoard);
-            $scope.kanbanSortOptions = {
-
-                itemMoved: function (event) {
-                    event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
-                },
-                orderChanged: function (event) {
-                },
-                containment: '#board'
-            };
-
-            $scope.removeCard = function (column, card) {
-                _BoardService.removeCard($scope.kanbanBoard, column, card);
-            };
-
-            $scope.addNewCard = function (column) {
-                _BoardService.addNewCard($scope.kanbanBoard, column);
-            }
+        this.kanbanSortOptions = {
+            itemMoved: function (event) {
+                event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
+                BoardService.addNewCard({board: ctrl.kanbanBoard, title: ctrl.title, column: {name: ctrl.column}, details: ctrl.details});
+            },
+            orderChanged: function (event) {
+            },
+            containment: '#board'
         };
-        
-        this.controller = ['$scope', '$state', 'PubSub', 'BoardService', 'BoardFactory',
-            ($scope, $state, PubSub, BoardService, BoardFactory) => {
-            console.log('HomeComponent controller',BoardService, BoardFactory);
-            _state = $state;
-            _PubSub = PubSub;
-            _BoardService = BoardService;
-            _BoardFactory = BoardFactory;
-            
-        }];
+
+        this.removeCard = function (column, card) {
+            BoardService.removeCard(this.kanbanBoard, column, card);
+        };
+
+        this.addNewCard = function (column) {
+            this.visible = true;
+        };
+       
     }
 }
 
-HomeComponent.$inject = ['$scope', '$state', 'PubSub', 'BoardService', 'BoardFactory'];
+const HomeComponent = {
+    template: templateHome,
+
+    controller: HomeController
+};
+console.log('HomeComponent --- ', HomeComponent);
+HomeController.$inject = ['$scope', 'PubSub', 'BoardService', 'BoardFactory', 'StorageService'];
+
 export default HomeComponent;

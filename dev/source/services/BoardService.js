@@ -1,6 +1,6 @@
 class BoardService {
 
-    constructor ( BoardManipulator, model) {
+    constructor ($uibModal, BoardManipulator, StorageService) {
         function Board(name, numberOfColumns) {
             return {
                 name: name,
@@ -10,56 +10,30 @@ class BoardService {
             };
         }
 
-        function Column(name) {
-            return {
-                name: name,
-                cards: []
-            };
-        }
-
-        function Backlog(name) {
-            return {
-                name: name,
-                phases: []
-            };
-        }
-
-        function Phase(name) {
-            return {
-                name: name,
-                cards: []
-            };
-        }
-
-        function Card(title, status, details) {
-            this.title = title;
-            this.status = status;
-            this.details = details;
-            return this;
-        }
-        console.log('BoardService---- ', model);
         this.removeCard = function (board, column, card) {
             if (confirm('Are You sure to Delete?')) {
                 BoardManipulator.removeCardFromColumn(board, column, card);
             }
         };
 
-        this.addNewCard =  function (board, column) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/partials/newCard.html',
-                controller: 'NewCardController',
-                backdrop: 'static',
-                resolve: {
-                    column: function () {
-                        return column;
-                    }
-                }
-            });
-            modalInstance.result.then(function (cardDetails) {
-                if (cardDetails) {
-                    BoardManipulator.addCardToColumn(board, cardDetails.column, cardDetails.title, cardDetails.details);
-                }
-            });
+        this.addNewCard = function (cardDetails) {
+            // var modalInstance = $uibModal.open({
+            //     template: '<new-card-component></new-card-component>',
+            //     // controller: 'NewCardController',
+            //     backdrop: 'static',
+            //     resolve: {
+            //         column: function () {
+            //             return column;
+            //         }
+            //     }
+            // });
+            // modalInstance.result.then(function (cardDetails) {
+                console.log('---addCardToColumn.result--- ', cardDetails);
+            //     if (cardDetails) {
+                    BoardManipulator.addCardToColumn(cardDetails.board, cardDetails.column, cardDetails.title, cardDetails.details);
+                    StorageService.saveData(cardDetails.board, 'ToDoBoard');
+                // }
+            // });
         };
         this.kanbanBoard =  function (board) {
             var kanbanBoard = new Board(board.name, board.numberOfColumns);
@@ -69,6 +43,7 @@ class BoardService {
                     BoardManipulator.addCardToColumn(kanbanBoard, column, card.title, card.details);
                 });
             });
+            console.log('BoardService----kanbanBoard ', kanbanBoard);
             return kanbanBoard;
         };
         this.sprintBoard =  function (board) {
@@ -92,5 +67,5 @@ class BoardService {
 
 }
 
-BoardService.$inject = [ 'BoardManipulator', 'model'];
+BoardService.$inject = ['$uibModal', 'BoardManipulator', 'StorageService'];
 export default BoardService;

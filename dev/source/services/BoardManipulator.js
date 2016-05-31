@@ -1,6 +1,6 @@
 class BoardManipulator {
 
-    constructor () {
+    constructor (StorageService) {
         function Board(name, numberOfColumns) {
             return {
                 name: name,
@@ -32,10 +32,14 @@ class BoardManipulator {
         }
 
         function Card(title, status, details) {
-            this.title = title;
-            this.status = status;
-            this.details = details;
-            return this;
+            // this.title = title;
+            // this.status = status;
+            // this.details = details;
+            return {
+                title: title,
+                status: status,
+                details: details
+            };
         }
         this.addColumn = function (board, columnName) {
             board.columns.push(new Column(columnName));
@@ -47,6 +51,7 @@ class BoardManipulator {
                     col.cards.push(new Card(cardTitle, column.name, details));
                 }
             });
+            console.log('---addCardToColumn.manipulator--- ', board);
         };
         this.removeCardFromColumn = function (board, column, card) {
             angular.forEach(board.columns, function (col) {
@@ -54,6 +59,8 @@ class BoardManipulator {
                     col.cards.splice(col.cards.indexOf(card), 1);
                 }
             });
+            
+            StorageService.saveData(board, 'ToDoBoard');
         };
         this.addBacklog = function (board, backlogName) {
             board.backlogs.push(new Backlog(backlogName));
@@ -80,5 +87,5 @@ class BoardManipulator {
         }
     }
 }
-
+BoardManipulator.$inject = ['StorageService'];
 export default BoardManipulator;
