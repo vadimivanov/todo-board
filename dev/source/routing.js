@@ -11,9 +11,15 @@ function routing($stateProvider, $urlRouterProvider) {
             url: '/',
             template: '<home-component><home-component>'
         })
-        .state('test', {
-            url: '/test',
-            template: '<test-component></test-component>'
+        .state('details', {
+            url: '/details',
+            template: '<details-component><details-component>',
+            params: {card: ''}           
+        })
+        .state('board', {
+            url: '/board:id',
+            template: '<board-component></board-component>',
+            params: {directory: ''}
         });
 }
 

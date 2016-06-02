@@ -9,7 +9,7 @@ class NewCardController {
         this.details = '';
         
         this.addNewCard = function () {
-            BoardService.addNewCard({board: this.kanbanBoard, title: this.title, column: {name: this.column}, details: this.details});
+            BoardService.addNewCard({board: this.kanbanBoard, title: this.title, column: {name: this.column}, details: this.details}, this.directoryBoard);
         };
         this.close = function () {
             this.visibleRow = false;
@@ -20,13 +20,13 @@ class NewCardController {
 const NewCardComponent = {
     bindings: {
         visibleRow: '=',
-        kanbanBoard: '<'
+        kanbanBoard: '<',
+        directoryBoard: '<'
     },
     template: templateNewCard,
 
     controller: NewCardController
 };
-console.log('newCardComponent --- ', NewCardComponent);
 
 NewCardController.$inject = ['$scope', 'PubSub', 'BoardService'];
 export default NewCardComponent;

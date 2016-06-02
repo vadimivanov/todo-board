@@ -1,31 +1,26 @@
 let templateHome = require('./home.html');
 
 class HomeController {
-    constructor($scope, PubSub, BoardService, BoardFactory, StorageService) {
-        var ctrl = this;
-        this.loadBoard = StorageService.loadData('ToDoBoard');
-        this.kanbanBoard = this.loadBoard || BoardService.kanbanBoard(BoardFactory.kanban);
-        this.visible = false;
-            console.log('loadBoard ', this.loadBoard);
+    constructor($state, BoardService, BoardFactory, StorageService) {
+        this.projectName = '';
+        // this.projectsList = [];
 
-        this.kanbanSortOptions = {
-            itemMoved: function (event) {
-                event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
-                BoardService.addNewCard({board: ctrl.kanbanBoard, title: ctrl.title, column: {name: ctrl.column}, details: ctrl.details});
-            },
-            orderChanged: function (event) {
-            },
-            containment: '#board'
+        this.createProject = function () {
+            this.projectsList.push({name: this.projectName});
+            StorageService.saveData(this.projectsList, 'projectsList');
+            this.loadList();
         };
-
-        this.removeCard = function (column, card) {
-            BoardService.removeCard(this.kanbanBoard, column, card);
+        
+        this.loadList = function () {
+            this.projectsList = StorageService.loadData('projectsList') || [];
+            console.log('this.projectsList', this.projectsList);
+        };        
+        
+        this.route = function (name) {
+            $state.go('board', {directory: name});
+            BoardService.setDir(name);
         };
-
-        this.addNewCard = function (column) {
-            this.visible = true;
-        };
-       
+        this.loadList();
     }
 }
 
@@ -34,7 +29,6 @@ const HomeComponent = {
 
     controller: HomeController
 };
-console.log('HomeComponent --- ', HomeComponent);
-HomeController.$inject = ['$scope', 'PubSub', 'BoardService', 'BoardFactory', 'StorageService'];
 
+HomeController.$inject = ['$state', 'BoardService', 'BoardFactory', 'StorageService'];
 export default HomeComponent;

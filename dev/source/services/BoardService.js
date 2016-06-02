@@ -1,6 +1,7 @@
 class BoardService {
 
     constructor ($uibModal, BoardManipulator, StorageService) {
+        this.dirBoard = '';
         function Board(name, numberOfColumns) {
             return {
                 name: name,
@@ -10,30 +11,23 @@ class BoardService {
             };
         }
 
-        this.removeCard = function (board, column, card) {
+        this.setDir = function (board) {
+            this.dirBoard = board;
+        };
+        this.getDir = function () {
+            return this.dirBoard;
+        };
+
+        this.removeCard = function (board, column, card, dir) {
             if (confirm('Are You sure to Delete?')) {
-                BoardManipulator.removeCardFromColumn(board, column, card);
+                BoardManipulator.removeCardFromColumn(board, column, card, dir);
             }
         };
 
-        this.addNewCard = function (cardDetails) {
-            // var modalInstance = $uibModal.open({
-            //     template: '<new-card-component></new-card-component>',
-            //     // controller: 'NewCardController',
-            //     backdrop: 'static',
-            //     resolve: {
-            //         column: function () {
-            //             return column;
-            //         }
-            //     }
-            // });
-            // modalInstance.result.then(function (cardDetails) {
-                console.log('---addCardToColumn.result--- ', cardDetails);
-            //     if (cardDetails) {
-                    BoardManipulator.addCardToColumn(cardDetails.board, cardDetails.column, cardDetails.title, cardDetails.details);
-                    StorageService.saveData(cardDetails.board, 'ToDoBoard');
-                // }
-            // });
+        this.addNewCard = function (cardDetails, directory) {
+            cardDetails.board.name = directory;
+            BoardManipulator.addCardToColumn(cardDetails.board, cardDetails.column, cardDetails.title, cardDetails.details);
+            StorageService.saveData(cardDetails.board, directory);
         };
         this.kanbanBoard =  function (board) {
             var kanbanBoard = new Board(board.name, board.numberOfColumns);
@@ -43,7 +37,6 @@ class BoardService {
                     BoardManipulator.addCardToColumn(kanbanBoard, column, card.title, card.details);
                 });
             });
-            console.log('BoardService----kanbanBoard ', kanbanBoard);
             return kanbanBoard;
         };
         this.sprintBoard =  function (board) {
@@ -64,7 +57,6 @@ class BoardService {
             return sprintBoard;
         }
     }
-
 }
 
 BoardService.$inject = ['$uibModal', 'BoardManipulator', 'StorageService'];

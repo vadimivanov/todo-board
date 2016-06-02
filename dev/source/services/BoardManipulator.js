@@ -53,14 +53,14 @@ class BoardManipulator {
             });
             console.log('---addCardToColumn.manipulator--- ', board);
         };
-        this.removeCardFromColumn = function (board, column, card) {
+        this.removeCardFromColumn = function (board, column, card, dir) {
             angular.forEach(board.columns, function (col) {
                 if (col.name === column.name) {
                     col.cards.splice(col.cards.indexOf(card), 1);
                 }
             });
             
-            StorageService.saveData(board, 'ToDoBoard');
+            StorageService.saveData(board, dir);
         };
         this.addBacklog = function (board, backlogName) {
             board.backlogs.push(new Backlog(backlogName));

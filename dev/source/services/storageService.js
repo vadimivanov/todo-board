@@ -8,15 +8,15 @@ class StorageService {
                 // console.log('StorageService', arr, storageName );
                 // parseLoad.push(arr[0]);
                 localStorage.removeItem(storageName);
-                localStorage.setItem(storageName, JSON.stringify(arr));
+                localStorage.setItem(storageName, angular.toJson(arr));
             } else {
-                localStorage.setItem(storageName, JSON.stringify(arr));
+                localStorage.setItem(storageName, angular.toJson(arr));
             }
         };
 
         this.loadData = function(storageName) {
             var loadData = JSON.parse(localStorage.getItem(storageName));
-            console.log('loadData  ', loadData );
+            console.log('loadData  ', loadData ,storageName);
             return loadData;
         };
 

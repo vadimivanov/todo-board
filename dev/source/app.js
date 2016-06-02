@@ -16,10 +16,11 @@ import BoardFactory from './services/BoardFactory.js';
 import BoardManipulator from './services/BoardManipulator.js';
 import StorageService from './services/storageService.js'
 
-// directives
+// directives, components
 import HomeComponent from './screens/home/home.component.js';
 import NewCardComponent from './screens/partials/newCard.component.js';
-// import testComponent from './screens/component/test.component.js';
+import DetailsComponent from './screens/component/details.component.js';
+import BoardComponent from './screens/board/board.component.js';
 
 angular.module('todoBoard', [
         angularAnimate,
@@ -34,7 +35,8 @@ angular.module('todoBoard', [
     .service('StorageService', StorageService)
     .component('homeComponent', HomeComponent)
     .component('newCardComponent', NewCardComponent)
-    // .component("testComponent", testComponent)
+    .component("detailsComponent", DetailsComponent)
+    .component("boardComponent", BoardComponent)
     .config(routing);
 
 console.log('load');

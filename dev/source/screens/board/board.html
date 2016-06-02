@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <h2>{{$ctrl.directory}} project</h2>
+    <div data-ng-model="kanbanBoard" id="board" >
+        <div id="columns" class="row">
+            <div class="col-sm-{{12/$ctrl.kanbanBoard.numberOfColumns}} col-xs-{{12/$ctrl.kanbanBoard.numberOfColumns}}"
+                 ng-repeat="column in $ctrl.kanbanBoard.columns"
+                 data-columnindex="{{$index}}" id="column{{$index}}">
+                <div class="column">
+                    <div class="columnHeader">
+                        <a title="Add card to column" ng-click="$ctrl.addNewCard()" ng-if="column.name == 'Ideas'">
+                            <i class="glyphicon glyphicon-plus addNewCard"></i>
+                        </a>
+                        <span>{{column.name}} ({{column.cards.length}})</span>
+                        <div  ng-if="column.name == 'Ideas'">
+                            <new-card-component
+                                    ng-if="$ctrl.visible == true"
+                                    visible-row="$ctrl.visible"
+                                    kanban-board="$ctrl.kanbanBoard"
+                                    directory-board="$ctrl.directory">
+                            </new-card-component>
+                        </div>
+                    </div>
+                    <ul class="cards card-list" as-sortable="$ctrl.kanbanSortOptions" data-ng-model="column.cards">
+                        <li class="card" ng-repeat="card in column.cards " as-sortable-item ng-click="$ctrl.route(card)">
+                            <div as-sortable-item-handle>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <h4 class="">{{card.status}}</h4>
+                                        <span class="card-title">{{card.title}}</span>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a data-no-drag class=" removeCard pull-right btn btn-xs" ng-click="$ctrl.removeCard(column, card)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
