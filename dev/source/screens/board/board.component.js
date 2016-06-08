@@ -10,7 +10,7 @@ class BoardController {
         this.kanbanSortOptions = {
             itemMoved: function (event) {
                 event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
-                BoardService.addNewCard({board: ctrl.kanbanBoard, title: ctrl.title, column: {name: ctrl.column}, details: ctrl.details}, $state.params.directory.toString());
+                BoardService.addNewCard({board: ctrl.kanbanBoard, title: ctrl.title, column: {name: ctrl.column}, details: ctrl.details}, ctrl.directory);
             },
             orderChanged: function (event) {
             },
@@ -26,6 +26,7 @@ class BoardController {
         };
 
         this.route = function (card) {
+            BoardService.setBoard(this.kanbanBoard);
             $state.go('details', {card: card});
         }
     }

@@ -32,9 +32,6 @@ class BoardManipulator {
         }
 
         function Card(title, status, details) {
-            // this.title = title;
-            // this.status = status;
-            // this.details = details;
             return {
                 title: title,
                 status: status,
@@ -51,7 +48,6 @@ class BoardManipulator {
                     col.cards.push(new Card(cardTitle, column.name, details));
                 }
             });
-            console.log('---addCardToColumn.manipulator--- ', board);
         };
         this.removeCardFromColumn = function (board, column, card, dir) {
             angular.forEach(board.columns, function (col) {

@@ -5,9 +5,11 @@
             <div class="thumbnail">
                 <div class="caption">
                     <h3>{{$ctrl.card.title}}</h3>
-                    <p>{{$ctrl.card.details}}</p>
+                    <textarea class="form-control" rows="3" ng-model="$ctrl.detailsChanges"></textarea>
                 </div>
+                <button type="button" class="btn btn-success" ng-click="$ctrl.saveChanges()">Save</button>
             </div>
+            <ui-gmap-google-map center='$ctrl.map.center' zoom='$ctrl.map.zoom' style="height: 400px"></ui-gmap-google-map>
         </div>
     </div>
 </div>

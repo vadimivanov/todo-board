@@ -2,6 +2,7 @@ class BoardService {
 
     constructor ($uibModal, BoardManipulator, StorageService) {
         this.dirBoard = '';
+        this.tempBoard = [];
         function Board(name, numberOfColumns) {
             return {
                 name: name,
@@ -11,6 +12,13 @@ class BoardService {
             };
         }
 
+        this.setBoard = function (board) {
+            this.tempBoard = board;
+        };
+        this.getBoard = function () {
+            return this.tempBoard;
+        };
+        
         this.setDir = function (board) {
             this.dirBoard = board;
         };
